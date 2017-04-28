@@ -11,6 +11,7 @@ public class Note {
     String text;
     Date updatedAt;
     Integer id;
+    Integer UserId;
 
     public String getText() {
         return text;

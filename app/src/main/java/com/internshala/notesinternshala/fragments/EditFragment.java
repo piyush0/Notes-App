@@ -1,5 +1,6 @@
 package com.internshala.notesinternshala.fragments;
 
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.internshala.notesinternshala.R;
+import com.internshala.notesinternshala.activities.MainActivity;
 import com.internshala.notesinternshala.db.NotesDbHelper;
 import com.internshala.notesinternshala.db.tables.NotesTable;
 import com.internshala.notesinternshala.models.Note;
@@ -58,7 +60,10 @@ public class EditFragment extends Fragment {
                     if (newNote) {
                         //Add new note
                         SQLiteDatabase notesDb = (new NotesDbHelper(getContext())).getWritableDatabase();
-                        NotesTable.addNewNote(notesDb, new Note(et_note_text.getText().toString(), new Date()));
+                        NotesTable.addNewNote(notesDb,
+                                new Note(et_note_text.getText().toString(), new Date()),
+                                getContext().getSharedPreferences(getString(R.string.shared_prefs_login), Context.MODE_PRIVATE)
+                                        .getLong(MainActivity.LOGGED_IN, -1));
                     } else {
                         //Update note
                         SQLiteDatabase notesDb = (new NotesDbHelper(getContext())).getWritableDatabase();

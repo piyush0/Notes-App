@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.internshala.notesinternshala.db.tables.NotesTable;
+import com.internshala.notesinternshala.db.tables.UserTable;
 
 /**
  * Created by piyush0 on 27/04/17.
@@ -21,6 +22,7 @@ public class NotesDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL(UserTable.CMD_CREATE_TABLE);
         db.execSQL(NotesTable.CMD_CREATE_TABLE);
     }
 

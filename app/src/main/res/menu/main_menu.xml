@@ -3,8 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_add"
+        android:icon="@drawable/ic_note_add_white_24dp"
         android:title="Add"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_note_add_white_24dp"></item>
+        app:showAsAction="always"></item>
+
+    <item
+        android:id="@+id/action_sign_out"
+        android:title="Sign Out!"
+        app:showAsAction="always"></item>
 
 </menu>

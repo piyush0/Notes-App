@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.internshala.notesinternshala.R;
+import com.internshala.notesinternshala.activities.MainActivity;
 import com.internshala.notesinternshala.db.NotesDbHelper;
 import com.internshala.notesinternshala.db.tables.NotesTable;
 import com.internshala.notesinternshala.fragments.EditFragment;
@@ -67,14 +68,16 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             public void onClick(View v) {
                 SQLiteDatabase notesDb = (new NotesDbHelper(context)).getWritableDatabase();
                 NotesTable.deleteNote(notesDb, note);
-                notes = NotesTable.getAllNotes(notesDb);
+                notes = NotesTable.getAllNotes(notesDb,
+                        context.getSharedPreferences(context.getString(R.string.shared_prefs_login), Context.MODE_PRIVATE)
+                                .getLong(MainActivity.LOGGED_IN, -1));
                 notifyDataSetChanged();
             }
         });
     }
 
-    private String prettyDate(Date date){
-        return date.getDate() + "/" + date.getMonth() + "/" + (date.getYear()+1900);
+    private String prettyDate(Date date) {
+        return date.getDate() + "/" + date.getMonth() + "/" + (date.getYear() + 1900);
     }
 
     @Override

@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(getString(R.string.shared_prefs_login), Context.MODE_PRIVATE);
         fragmentManager = getSupportFragmentManager();
 
-        if (!sharedPreferences.getBoolean(LOGGED_IN, false)) {
+        if (sharedPreferences.getLong(LOGGED_IN, -1) == -1) {
             //User is logged out
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction

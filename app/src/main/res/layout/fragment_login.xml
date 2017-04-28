@@ -29,4 +29,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sign In!" />
+
+    <TextView
+        android:textSize="20sp"
+        android:layout_marginTop="@dimen/button_size"
+        android:id="@+id/tv_sign_up"
+        android:text="Sign up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

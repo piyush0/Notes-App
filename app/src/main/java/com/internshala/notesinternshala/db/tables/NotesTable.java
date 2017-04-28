@@ -15,6 +15,7 @@ import static com.internshala.notesinternshala.db.DbStrings.LBR;
 import static com.internshala.notesinternshala.db.DbStrings.ORDER_DESC;
 import static com.internshala.notesinternshala.db.DbStrings.RBR;
 import static com.internshala.notesinternshala.db.DbStrings.TERM;
+import static com.internshala.notesinternshala.db.DbStrings.TYPE_INT;
 import static com.internshala.notesinternshala.db.DbStrings.TYPE_INT_PK_AI;
 import static com.internshala.notesinternshala.db.DbStrings.TYPE_TEXT;
 
@@ -27,25 +28,27 @@ public class NotesTable {
     private static final String TABLE_NAME = "notes";
 
     private interface Columns {
-
         String ID = "id";
         String TEXT = "text";
         String UPDATED_AT = "updatedAt";
+        String USER_ID = "userId";
     }
 
     public static String CMD_CREATE_TABLE =
             CMD_CREATE_TABLE_INE + TABLE_NAME + LBR
                     + Columns.ID + TYPE_INT_PK_AI + COMMA
                     + Columns.TEXT + TYPE_TEXT + COMMA
-                    + Columns.UPDATED_AT + TYPE_TEXT
-                    + RBR + TERM;
+                    + Columns.UPDATED_AT + TYPE_TEXT + COMMA
+                    + Columns.USER_ID + TYPE_INT + COMMA
+                    + " FOREIGN KEY (" + Columns.USER_ID + ") REFERENCES " + UserTable.TABLE_NAME + "(" + UserTable.Columns.ID + "));";
 
 
-    public static long addNewNote(SQLiteDatabase db, Note note) {
+    public static long addNewNote(SQLiteDatabase db, Note note, Long userId) {
 
         ContentValues cv = new ContentValues();
         cv.put(Columns.TEXT, note.getText());
         cv.put(Columns.UPDATED_AT, note.getUpdatedAt().toString());
+        cv.put(Columns.USER_ID, userId);
 
         return db.insert(TABLE_NAME, null, cv);
     }
@@ -56,11 +59,14 @@ public class NotesTable {
             Columns.UPDATED_AT
     };
 
-    public static ArrayList<Note> getAllNotes(SQLiteDatabase db) {
+    public static ArrayList<Note> getAllNotes(SQLiteDatabase db, Long userId) {
 
         ArrayList<Note> notes = new ArrayList<>();
 
-        Cursor c = db.query(TABLE_NAME, FULL_PROJECTION, null, null, null, null, Columns.UPDATED_AT + ORDER_DESC);
+        String whereClause = Columns.USER_ID + "=?";
+        String[] whereArgs = {userId.toString()};
+
+        Cursor c = db.query(TABLE_NAME, FULL_PROJECTION, whereClause, whereArgs, null, null, Columns.UPDATED_AT + ORDER_DESC);
 
         int colID = c.getColumnIndex(Columns.ID);
         int colText = c.getColumnIndex(Columns.TEXT);
@@ -82,10 +88,8 @@ public class NotesTable {
     }
 
     public static void deleteNote(SQLiteDatabase db, Note note) {
-
         String Selection = Columns.ID + " LIKE ?";
         String[] SelectionArgs = {String.valueOf(note.getId())};
         db.delete(TABLE_NAME, Selection, SelectionArgs);
-
     }
 }
