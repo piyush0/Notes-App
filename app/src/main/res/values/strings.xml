@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Notes Internshala</string>
+    <string name="shared_prefs_login">Shared_Prefs_Login</string>
+</resources>
